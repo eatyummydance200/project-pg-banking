@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Web Banking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="page-shell">
+    <header class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow">Spring Boot + PostgreSQL</p>
+            <h1>Mini Web Banking Control Room</h1>
+            <p class="hero-text">
+                회원 생성부터 입금, 출금, 이체, 잔액 조회까지 한 화면에서 확인할 수 있는
+                간단한 웹 뱅킹 대시보드입니다.
+            </p>
+            <div class="hero-stats">
+                <article>
+                    <span class="stat-label">Core</span>
+                    <strong>Transfer Integrity</strong>
+                </article>
+                <article>
+                    <span class="stat-label">Focus</span>
+                    <strong>Load Test Ready</strong>
+                </article>
+                <article>
+                    <span class="stat-label">Mode</span>
+                    <strong>MVP Playground</strong>
+                </article>
+            </div>
+        </div>
+        <div class="hero-card">
+            <div class="card-chip">Live API</div>
+            <dl>
+                <div>
+                    <dt>Base URL</dt>
+                    <dd>/api</dd>
+                </div>
+                <div>
+                    <dt>Account Flow</dt>
+                    <dd>Create > Deposit > Withdraw > Transfer</dd>
+                </div>
+                <div>
+                    <dt>Readiness</dt>
+                    <dd>Manual QA + JMeter seed</dd>
+                </div>
+            </dl>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <section class="panel">
+            <div class="panel-head">
+                <h2>회원 및 계좌 개설</h2>
+                <p>사용자 등록과 동시에 계좌를 생성합니다.</p>
+            </div>
+            <form id="create-user-form" class="form-grid">
+                <label>
+                    <span>Login ID</span>
+                    <input type="text" name="loginId" placeholder="user01" required>
+                </label>
+                <label>
+                    <span>Name</span>
+                    <input type="text" name="name" placeholder="홍길동" required>
+                </label>
+                <label class="full-span">
+                    <span>Initial Balance</span>
+                    <input type="number" name="initialBalance" min="0" step="0.01" placeholder="10000" required>
+                </label>
+                <button type="submit">계좌 만들기</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h2>잔액 조회</h2>
+                <p>계좌 ID 기준으로 현재 잔액을 조회합니다.</p>
+            </div>
+            <form id="balance-form" class="form-grid">
+                <label class="full-span">
+                    <span>Account ID</span>
+                    <input type="number" name="accountId" min="1" placeholder="1" required>
+                </label>
+                <button type="submit">잔액 조회</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h2>입금 / 출금</h2>
+                <p>테스트 계좌의 금액 흐름을 빠르게 확인합니다.</p>
+            </div>
+            <div class="split-actions">
+                <form id="deposit-form" class="form-grid">
+                    <label class="full-span">
+                        <span>Account ID</span>
+                        <input type="number" name="accountId" min="1" placeholder="1" required>
+                    </label>
+                    <label class="full-span">
+                        <span>Amount</span>
+                        <input type="number" name="amount" min="0.01" step="0.01" placeholder="5000" required>
+                    </label>
+                    <button type="submit" class="accent-green">입금</button>
+                </form>
+
+                <form id="withdraw-form" class="form-grid">
+                    <label class="full-span">
+                        <span>Account ID</span>
+                        <input type="number" name="accountId" min="1" placeholder="1" required>
+                    </label>
+                    <label class="full-span">
+                        <span>Amount</span>
+                        <input type="number" name="amount" min="0.01" step="0.01" placeholder="1000" required>
+                    </label>
+                    <button type="submit" class="accent-amber">출금</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h2>계좌 이체</h2>
+                <p>가장 중요한 트랜잭션 경로입니다. 두 계좌의 출금/입금이 함께 처리됩니다.</p>
+            </div>
+            <form id="transfer-form" class="form-grid">
+                <label>
+                    <span>From Account ID</span>
+                    <input type="number" name="fromAccountId" min="1" placeholder="1" required>
+                </label>
+                <label>
+                    <span>To Account ID</span>
+                    <input type="number" name="toAccountId" min="1" placeholder="2" required>
+                </label>
+                <label class="full-span">
+                    <span>Amount</span>
+                    <input type="number" name="amount" min="0.01" step="0.01" placeholder="2500" required>
+                </label>
+                <button type="submit" class="accent-rose">이체 실행</button>
+            </form>
+        </section>
+
+        <aside class="panel log-panel">
+            <div class="panel-head">
+                <h2>실행 로그</h2>
+                <p>API 응답과 오류를 여기에 출력합니다.</p>
+            </div>
+            <div class="log-toolbar">
+                <button id="seed-demo-btn" type="button" class="ghost-button">샘플 값 채우기</button>
+                <button id="clear-log-btn" type="button" class="ghost-button">로그 비우기</button>
+            </div>
+            <pre id="response-log" class="response-log">홈페이지가 준비되었습니다.</pre>
+        </aside>
+    </main>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
