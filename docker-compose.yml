@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  Postgres:
+    image: postgres:16
+    container_name: database-project
+    environment:
+      POSTGRES_USER: taeyeong
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: web_banking
+    ports:
+      - "5432:5432"
+    command: postgres -c max_connections=200
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+      - .:/workspace
+
+volumes:
+  pgdata:
